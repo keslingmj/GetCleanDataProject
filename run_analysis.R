@@ -2,6 +2,12 @@
 ## keslingmj
 ## run_analysis.R
 
+## to do: make warnings if they don't have the necessary packages
+## installed.
+
+## include read.table(fileName); View(tidy_dataset) command s.t.
+## markers can see my table in Rstudio very easily.
+
 ## Files and What is in them:
 ## ./UCI\ HAR\ Dataset/
       # activity_labels.txt
@@ -170,7 +176,7 @@ colnames(df) <- varNames
 ## mean() or std() in the name:
 varLogical <- grepl("(*mean\\(|*std\\()", varNames)
 varLogical[1] <- TRUE; varLogical[2] <- TRUE #keeping 1st 2 cols
-#keepCols <- varNames[varLogical]
+
 colSubset <- df[,varLogical]
 
 ## step 2 done
@@ -188,17 +194,60 @@ colSubset$Activity <- as.factor(colSubset$Activity)  # not sure if needed
 colNames <- colnames(colSubset)
 newColNames <- vector("character", length = 0)
 for(i in colNames){
-      j <- gsub("\\(\\)","",i)
+      i2 <- gsub("\\(\\)","",i)
+      j <- gsub("\\-", "", i2)
       newColNames <- c(newColNames, j)
 }
 colnames(colSubset) <- newColNames
 
 #step 4 done
-# For step 5, we're going to want to do some kind of melting. 
+# STEP 5
 
+library(plyr)
 library(dplyr)
-ddply(colSubset, .(Subject, Activity), 
-      function(sub_dat) mean(as.numeric(sub_dat[["tBodyAcc-mean-X"]])))
+
+calc_avg <- function(colSubset, newColNames){
+      df_final <- data.frame()
+      k <- 0
+      for(i in newColNames){
+            if(grepl("Subject", i)){
+                  next
+            }
+            if(grepl("Activity", i)){
+                  next
+            }
+            rslt <- colSubset %>% group_by(Subject, Activity) %>% summarise_each(funs(mean), matches(i))
+            newCol <- rslt[3]
+            
+            if(k != 0){
+                  df_final <- cbind(df_final, newCol) 
+            }
+            if(k == 0){
+                  df_final <- rslt
+                  k <- k + 1
+            }
+      }
+      return(df_final)
+}
+
+
+df_FINAL <- calc_avg(colSubset, newColNames)
+
+
+
+
+
+#cbind(df_final, rslt[[3]], deparse.level = 1, stringsAsFactors = TRUE)
+#cbind(df_final, rslt[3])
+#      string <- newColNames[i]
+#      ddply(colSubset, .(Subject, Activity), plyr::summarise, 
+#val=mean(as.numeric(x)))  
+#            (string) = mean(string))
+
+# had to use plyr::summarise due to Hmisc::summarize being higher priority
+# than plyr::ddply in search() list in Rstudio
+#new2 <- ddply(colSubset, .(Subject, Activity), 
+     # vect_mean(colSubset$"tBodyAcc-mean-X"))
 # previous problem was within "summarize" within ddply, not with ddply
 # itself.  I followed advice at:
 # http://stackoverflow.com/questions/12927468/parameterize-ddply-in-r
