@@ -1,12 +1,20 @@
 ## Course Project, Getting and Cleaning Data
-## keslingmj
-## run_analysis.R
+## Username: keslingmj
+## Script_Name: run_analysis.R
 
 ## to do: make warnings if they don't have the necessary packages
 ## installed.
 
+files <- dir()
+flag <- length(unique(sort(grepl("UCI\ HAR\ Dataset", files))))
+if(flag != 2){
+      print("The run_analysis.R script must be located in the same directory as the UCI\ HAR\ Dataset directory")     
+}
+
 ## include read.table(fileName); View(tidy_dataset) command s.t.
 ## markers can see my table in Rstudio very easily.
+
+## Need to output tidy data to file
 
 ## Files and What is in them:
 ## ./UCI\ HAR\ Dataset/
@@ -132,6 +140,8 @@
 #542 fBodyBodyGyroJerkMag-mean()
 #543 fBodyBodyGyroJerkMag-std()
 
+library(plyr)
+library(dplyr)
 
 #url <- "https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip"
 #download.file(url, destfile= "/Users/mjk/coursera/get_clean_data/dataset.zip", method = "curl")
@@ -195,7 +205,9 @@ colNames <- colnames(colSubset)
 newColNames <- vector("character", length = 0)
 for(i in colNames){
       i2 <- gsub("\\(\\)","",i)
-      j <- gsub("\\-", "", i2)
+      i3 <- gsub("\\-", "_", i2) 
+      i4 <- gsub("mean", "MEAN", i3) 
+      j <- gsub("std","STD", i4)
       newColNames <- c(newColNames, j)
 }
 colnames(colSubset) <- newColNames
@@ -232,6 +244,7 @@ calc_avg <- function(colSubset, newColNames){
 
 
 df_FINAL <- calc_avg(colSubset, newColNames)
+View(df_FINAL)
 
 
 
