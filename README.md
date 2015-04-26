@@ -67,7 +67,6 @@ you should:
 
    Relevant data frames:
    	  * df		entire merged dataframe (step 1): [10299 x 563]
-	    		(step 1)
 	  * colSubset	subset of df that contained columns ENDING with
 	    		mean() or std() (see above).  (step 2, 3, and 4)
 	  * TIDY	final product (step 5)
