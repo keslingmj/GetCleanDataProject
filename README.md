@@ -28,7 +28,7 @@ Activity pair.  These means are what appear in the Tidy Dataset.
 
 
 
-In order to view the tidy_dataset.txt most easily:
+###In order to view the tidy_dataset.txt most easily:
 
 1. Fork the file and transfer it to your computer.
 2. Make sure that RStudio's current directory (getwd()) is in the same place
@@ -38,7 +38,7 @@ In order to view the tidy_dataset.txt most easily:
 
 
 
-In order to evaluate my run_analysis.R script and to evaluate my tidy dataset,
+###In order to evaluate my run_analysis.R script and to evaluate my tidy dataset,
 you should:
 
 1. In RStudio, go to the directory THAT HOLDS your copy of "UCI HAR Dataset"
