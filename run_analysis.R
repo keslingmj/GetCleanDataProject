@@ -105,7 +105,7 @@ calc_avg <- function(colSubset, newColNames){
 
 TIDY <- calc_avg(colSubset, newColNames)
 View(TIDY)
-write.table(TIDY, file="./tidy_dataset.txt", sep=" ")
+write.table(TIDY, file="./tidy_dataset.txt", sep=" ", row.name=FALSE)
 
 
 
