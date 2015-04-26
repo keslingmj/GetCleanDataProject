@@ -27,6 +27,17 @@ those 66 movement variables, a mean was calculated for each Subject,
 Activity pair.  These means are what appear in the Tidy Dataset.
 
 
+
+In order to view the tidy_dataset.txt most easily:
+
+1. Fork the file and transfer it to your computer.
+2. Make sure that RStudio's current directory (getwd()) is in the same place
+   as the tidy_dataset.txt
+3. From the command-line in RStudio: > tidy <- read.table("./tidy_dataset.txt")
+4. > View(tidy)
+
+
+
 In order to evaluate my run_analysis.R script and to evaluate my tidy dataset,
 you should:
 
